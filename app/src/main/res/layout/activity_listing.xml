@@ -11,22 +11,81 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_margin="10dp"
         android:id="@+id/view_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.listing.ListingActivity">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/purple_200"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_centerVertical="true"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/cloud_image"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_sun" />
+
+                <LinearLayout
+                    android:layout_toLeftOf="@+id/cloud_image"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:padding="5dp"
+                        android:lines="1"
+                        android:layout_gravity="end"
+                        android:id="@+id/tv_city"
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
+                        android:text="Coimbatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_gravity="end"
+                        android:padding="5dp"
+                        android:lines="1"
+                        android:id="@+id/tv_condition"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"
+                        android:text="Coimbatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_countries"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/card_weather"
             app:spanCount="2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="@+id/view_parent"
-            app:layout_constraintEnd_toEndOf="@+id/view_parent"
-            app:layout_constraintEnd_toStartOf="@+id/view_parent"
-            app:layout_constraintTop_toTopOf="@+id/view_parent"
             tools:itemCount="5"
             tools:listitem="@layout/row_country_listing_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>

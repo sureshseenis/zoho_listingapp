@@ -2,36 +2,26 @@ package com.zoho.listingapp.di.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.zoho.listingapp.activities.listing.ListingActivityViewModel
-import com.zoho.listingapp.activities.splash.SplashActivityViewModel
 import com.zoho.listingapp.api.services.ApiService
 import com.zoho.listingapp.api.services.WeatherService
-import com.zoho.listingapp.di.coponent.DaggerNetworkComponent
 import com.zoho.listingapp.di.coponent.DaggerWeatherComponent
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class ViewModelFactory : ViewModelProvider.Factory {
-
+class WeatherViewModelFactory : ViewModelProvider.Factory {
     @Inject
-    lateinit var retrofit: Retrofit
+    lateinit var retrofitWeather: Retrofit
 
     lateinit var apiService: ApiService
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        DaggerNetworkComponent.create().inject(this)
+        DaggerWeatherComponent.create().inject(this)
 
-        //create retrofit service
-        apiService = retrofit.create(ApiService::class.java)
-
-        if (modelClass.isAssignableFrom(SplashActivityViewModel::class.java)) {
-            return SplashActivityViewModel(
-                Dispatchers.Main,
-                apiService
-            ) as T
-        }
+        apiService= retrofitWeather.create(ApiService::class.java)
 
         if (modelClass.isAssignableFrom(ListingActivityViewModel::class.java)) {
             return ListingActivityViewModel(
@@ -41,5 +31,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")
+
     }
 }

@@ -3,6 +3,9 @@
     package="com.zoho.listingapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,9 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicatoiin">
-        <activity
-            android:name="com.zoho.listingapp.activities.listing.ListingActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name="com.zoho.listingapp.activities.listing.ListingActivity" />
         <activity
             android:name=".activities.splash.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

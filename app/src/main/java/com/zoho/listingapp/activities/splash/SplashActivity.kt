@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.zoho.listingapp.R
 import com.zoho.listingapp.activities.listing.ListingActivity
 import com.zoho.listingapp.databinding.ActivitySplashBinding
 import com.zoho.listingapp.di.factory.ViewModelFactory
+import kotlinx.coroutines.*
 
 class SplashActivity : AppCompatActivity() {
-    lateinit var splashActivityDataBinding: ActivitySplashBinding
-    lateinit var viewModelSplashActivity: SplashActivityViewModel
+    private lateinit var splashActivityDataBinding: ActivitySplashBinding
+    private lateinit var viewModelSplashActivity: SplashActivityViewModel
+    private val activityScope = CoroutineScope(Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,11 +26,19 @@ class SplashActivity : AppCompatActivity() {
         val viewModelFactory = ViewModelFactory()
         viewModelSplashActivity =
             ViewModelProvider(this, viewModelFactory).get(SplashActivityViewModel::class.java)
+
         splashActivityDataBinding.viewModel = viewModelSplashActivity
 
-        splashActivityDataBinding.ivSplash.setOnClickListener{
-            startActivity(Intent(this,ListingActivity::class.java))
+        activityScope.launch {
+            delay(3000)
+            startActivity(Intent(this@SplashActivity, ListingActivity::class.java))
+            finish()
         }
 
+    }
+
+    override fun onPause() {
+        activityScope.cancel()
+        super.onPause()
     }
 }
