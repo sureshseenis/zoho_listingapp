@@ -72,7 +72,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxJava_version"
 
-
     //Retrofit
     def retrofit_version = "2.6.1"
     implementation  "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -98,6 +97,19 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation'com.google.android.gms:play-services-maps:17.0.0'
 
+    def roomVersion = '2.2.3'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$roomVersion"
 
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$roomVersion"
+    def room_version = "2.2.3" // check latest version from docs
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation 'com.github.MatteoBattilana:WeatherView:3.0.0'
 
 }

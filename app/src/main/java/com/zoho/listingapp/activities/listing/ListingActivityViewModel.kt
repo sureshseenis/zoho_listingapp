@@ -1,13 +1,13 @@
 package com.zoho.listingapp.activities.listing
 
 import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.zoho.listingapp.api.models.RestCountries
-import com.zoho.listingapp.api.models.WeatherResponse
 import com.zoho.listingapp.api.services.ApiService
-import com.zoho.listingapp.api.services.WeatherService
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
+import com.zoho.listingapp.room.Countries
+import com.zoho.listingapp.room.DatabaseHelper
+import kotlinx.coroutines.*
 import java.lang.Exception
 
 class ListingActivityViewModel(
@@ -16,46 +16,43 @@ class ListingActivityViewModel(
 ) : ViewModel() {
 
     var restCountries = MutableLiveData<List<RestCountries.RestCountriesItem>>()
-    var weatherReaponse = MutableLiveData<WeatherResponse>()
+    var countiesDbData = MutableLiveData<List<Countries>>()
+    lateinit var dbHelper: DatabaseHelper
+
+    var progress=MutableLiveData<Boolean>(true)
+    var progressPercent=ObservableField<Int>(10)
 
     //Data get from api
     fun getCountriesFromApi() {
         //use coroutines
         viewModelScope.launch(dispatcher) {
+            progressPercent.set(80)
             try {
                 val responseCountries = apiService.getRestCountries()
                 if (responseCountries.isSuccessful) {
                     restCountries.value = responseCountries.body()
-                }else Log.d("Error","Api error")
+                    progress.value=false
+                } else progress.value=false
 
             } catch (e: Exception) {
-                Log.d("Error","Api error"+e.message)
+                progress.value=false
+                Log.d("Error", "Api error" + e.message)
             }
 
         }
 
     }
 
-    fun getWeatherDetails(strLatLong: String) {
-        //user coroutines
+    fun fetchRecords(str:String){
         viewModelScope.launch(dispatcher) {
-            try {
-
-                val weatherApiResponse =apiService.getWeatherDetails(
-                    "e966819dbf17430390f65612200811",
-                    strLatLong
-                )
-
-                if (weatherApiResponse.isSuccessful) {
-                    weatherReaponse.value = weatherApiResponse.body()
-                }else Log.d("Error","Api error")
-
-
-            } catch (e: Exception) {
-                Log.d("Error","Api error"+e.message)
-            }
-
+            countiesDbData.value = dbHelper.getSearchCountries(str)
         }
+
     }
 
+    fun fetchRecords() {
+        viewModelScope.launch(dispatcher) {
+            countiesDbData.value = dbHelper.getCountries()
+        }
+    }
 }

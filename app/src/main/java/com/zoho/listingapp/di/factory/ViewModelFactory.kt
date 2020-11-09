@@ -2,12 +2,11 @@ package com.zoho.listingapp.di.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.zoho.listingapp.activities.details.DetailsViewModel
 import com.zoho.listingapp.activities.listing.ListingActivityViewModel
 import com.zoho.listingapp.activities.splash.SplashActivityViewModel
 import com.zoho.listingapp.api.services.ApiService
-import com.zoho.listingapp.api.services.WeatherService
 import com.zoho.listingapp.di.coponent.DaggerNetworkComponent
-import com.zoho.listingapp.di.coponent.DaggerWeatherComponent
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -21,8 +20,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        DaggerNetworkComponent.create().inject(this)
-
+        DaggerNetworkComponent.builder().build().inject(this)
         //create retrofit service
         apiService = retrofit.create(ApiService::class.java)
 
@@ -35,6 +33,13 @@ class ViewModelFactory : ViewModelProvider.Factory {
 
         if (modelClass.isAssignableFrom(ListingActivityViewModel::class.java)) {
             return ListingActivityViewModel(
+                Dispatchers.Main,
+                apiService
+            ) as T
+        }
+
+        if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
+            return DetailsViewModel(
                 Dispatchers.Main,
                 apiService
             ) as T

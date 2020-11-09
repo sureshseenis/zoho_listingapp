@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 
 @Module
-class NetworkModule {
+class NetworkModule() {
 
     @Provides
     fun provideRetroInfo(): Retrofit {
